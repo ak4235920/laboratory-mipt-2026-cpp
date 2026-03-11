@@ -51,8 +51,7 @@ int main() {
     int n1 = 1000;
     int k = 10;
     for (int i = 0; i<8; ++i){
-        random_device rd;
-        unsigned seed = rd();
+        unsigned seed = 12345678;
         int *arr = new int [size[i]];
         default_random_engine rng(seed);
         uniform_int_distribution<unsigned> dstr (0 ,1e+8);
@@ -71,21 +70,45 @@ int main() {
         for (int j = 0; j<size[i]; ++j){
             count[j] = 0;
         }
-        auto begin = chrono :: steady_clock ::now();
-        for (unsigned cnt = 0; cnt <iterations[i]/n1; ++cnt){
-            str_C (arr, count, keys[cnt], size[i]);
+        uint64_t T = 0;
+        auto begin = chrono ::steady_clock ::now();
+        auto end = chrono ::steady_clock ::now();
+        auto time_span = chrono ::duration_cast<chrono ::nanoseconds>(end - begin);
+        int found;
+        for (unsigned cnt = 0; cnt < n1; ++cnt)
+        {
+            begin = chrono ::steady_clock ::now();
+            found = -1;
+            for (int p = 0; p < size[i]; ++p)
+            {
+                if (arr[p] == keys[cnt])
+                {       
+                    found = p;
+                    break;
+                }
+            }
+            
+            if (found>-1){
+                ++count[found];
+            }
+            while ((found > 0) and (count[found - 1] < count[found]))
+            {
+                swap(arr[found], arr[found - 1]);
+                swap(count[found], count[found - 1]);
+                --found;
+            }
+            end = chrono ::steady_clock ::now();
+            time_span = chrono ::duration_cast<chrono ::nanoseconds>(end - begin);
+            T += time_span.count();
         }
-        auto end = chrono :: steady_clock ::now();
-        auto time_span = chrono :: duration_cast<chrono :: nanoseconds >(end - begin);
-        outputFile<<time_span.count()<<' ';
+        outputFile << T << ' ';
         delete[] arr;
         delete[] keys;
         delete[] count;
     }
     outputFile<<'\n';
     for (int i = 0; i<8; ++i){
-        random_device rd;
-        unsigned seed = rd();
+        unsigned seed = 985432;
         int *arr = new int [size[i]];
         default_random_engine rng(seed);
         uniform_int_distribution<unsigned> dstr (0 ,1e+8);
@@ -100,20 +123,38 @@ int main() {
         for (int j = k; j < iterations[i]/n1; ++j) {
             keys[j] = keys[j%k];
         }
-        auto begin = chrono :: steady_clock ::now();
-        for (unsigned cnt = 0; cnt <iterations[i]/n1; ++cnt){
-            str_B (arr, keys[cnt], size[i]);
+        uint64_t T = 0;
+        auto begin = chrono ::steady_clock ::now();
+        auto end = chrono ::steady_clock ::now();
+        auto time_span = chrono ::duration_cast<chrono ::nanoseconds>(end - begin);
+        int found;
+        for (unsigned cnt = 0; cnt < n1; ++cnt)
+        {
+            begin = chrono ::steady_clock ::now();
+            found = -1;
+            for (int p = 0; p < size[i]; ++p)
+            {
+                if (arr[p] == keys[cnt])
+                {       
+                    found = p;
+                    break;
+                }
+            }
+            if (found > 0)
+            {
+                swap(arr[found - 1], arr[found]);
+            }
+            end = chrono ::steady_clock ::now();
+            time_span = chrono ::duration_cast<chrono ::nanoseconds>(end - begin);
+            T += time_span.count();
         }
-        auto end = chrono :: steady_clock ::now();
-        auto time_span = chrono :: duration_cast<chrono :: nanoseconds >(end - begin);
-        outputFile<<time_span.count()<<' ';
+        outputFile << T << ' ';
         delete[] arr;
         delete[] keys;
     }
     outputFile<<'\n';
     for (int i = 0; i<8; ++i){
-        random_device rd;
-        unsigned seed = rd();
+        unsigned seed = 90909090;
         int *arr = new int [size[i]];
         default_random_engine rng(seed);
         uniform_int_distribution<unsigned> dstr (0 ,1e+8);
@@ -128,13 +169,32 @@ int main() {
         for (int j = k; j < iterations[i]/n1; ++j) {
             keys[j] = keys[j%k];
         }
-        auto begin = chrono :: steady_clock ::now();
-        for (unsigned cnt = 0; cnt <iterations[i]/n1; ++cnt){
-            str_A (arr, keys[cnt], size[i]);
+        uint64_t T = 0;
+        auto begin = chrono ::steady_clock ::now();
+        auto end = chrono ::steady_clock ::now();
+        auto time_span = chrono ::duration_cast<chrono ::nanoseconds>(end - begin);
+        int found;
+        for (unsigned cnt = 0; cnt < n1; ++cnt)
+        {
+            begin = chrono ::steady_clock ::now();
+            found = -1;
+            for (int p = 0; p < size[i]; ++p)
+            {
+                if (arr[p] == keys[cnt])
+                {       
+                    found = p;
+                    break;
+                }
+            }
+            if (found > 0)
+            {
+                swap(arr[0], arr[found]);
+            }
+            end = chrono ::steady_clock ::now();
+            time_span = chrono ::duration_cast<chrono ::nanoseconds>(end - begin);
+            T += time_span.count();
         }
-        auto end = chrono :: steady_clock ::now();
-        auto time_span = chrono :: duration_cast<chrono :: nanoseconds >(end - begin);
-        outputFile<<time_span.count()<<' ';
+        outputFile << T << ' ';
         delete[] arr;
         delete[] keys;
     }
