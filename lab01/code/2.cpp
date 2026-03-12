@@ -88,7 +88,7 @@ int main()
                 }
             }
             end = chrono ::steady_clock ::now();
-            time_span = chrono ::duration_cast<chrono ::microseconds>(end - begin);
+            time_span = chrono ::duration_cast<chrono ::nanoseconds>(end - begin);
             T+= time_span.count();
         }
         outputFile << T << ' ';
@@ -143,7 +143,7 @@ int main()
                 }
             }
             end = chrono ::steady_clock ::now();
-            time_span = chrono ::duration_cast<chrono ::microseconds>(end - begin);
+            time_span = chrono ::duration_cast<chrono ::nanoseconds>(end - begin);
             T+= time_span.count();
         }
         outputFile << T << ' ';
